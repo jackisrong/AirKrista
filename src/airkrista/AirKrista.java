@@ -58,31 +58,45 @@ public class AirKrista {
 
     // Complete the folllowing methods
     public static void updateDatabase() {
-
+        System.out.println("Choose the file that contains your database");
     }
 
     public static void displayArrivals() {
-
+        System.out.println("Arrivals for today are:");
     }
 
     public static void displayDepartures() {
-
+        System.out.println("Departures for today are:");
     }
 
     public static void displayAirCanada() {
-
+        System.out.println("All Air Canada flights for today are:");
     }
 
     public static void purchaseTickets() {
-
+        Scanner keyboard = new Scanner(System.in);
+        
+        System.out.println("All departing Air Canada flights for today are:");
+        
+        // PRINT FLIGHTS AT LEAST 1 HOUR FROM NOW HERE
+        
+        System.out.println("Which flight would you like?");
+        int flightChoice = keyboard.nextInt();
+        System.out.println("What is your name?");
+        String ticketName = keyboard.nextLine();
+        System.out.println("How many tickets would you like to purchase?");
+        int numberOfTickets = keyboard.nextInt();
+        
+        //Ticket ticket = new Ticket(number, name, price);
+        // DISPLAY INVOICE HERE
     }
 
     public static void refundTickets() {
-
+        System.out.println("Please enter a valid ticket number:");
     }
 
     public static void logoff() {
-
+        System.out.println("Summary for [DATE]\n");
+        System.out.println("Purchases:\n");
     }
-
 }
