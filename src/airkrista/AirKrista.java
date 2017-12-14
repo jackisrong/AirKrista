@@ -1,6 +1,7 @@
 package airkrista;
 
 import java.util.ArrayList;
+import java.util.GregorianCalendar;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -78,19 +79,24 @@ public class AirKrista {
 
     public static void displayArrivals() {
         System.out.println("Arrivals for today are:");
-	System.out.println(String.format("%-15s", "Airline") + String.format("%-15s", "Flight Number") + String.format("%-15s", "Destination") + String.format("%-15s", "Date") + String.format("%-15s", "Time") + String.format("%-15s", "Terminal"));
+	System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
+	
+	System.out.println(String.format("%-15s", "Air Canada") + String.format("%-18s", "AC1234") + String.format("%-18s", "Vancouver") + String.format("%-15s", "20/12/2017") + String.format("%-10s", "15:03") + String.format("%-8s", "1"));
     }
 
     public static void displayDepartures() {
         System.out.println("Departures for today are:");
         
-        // AIRLINE, FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL
+        System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
     }
 
     public static void displayAirCanada() {
+	GregorianCalendar calendar = new GregorianCalendar();
+
         System.out.println("All Air Canada flights for today are:");
         
-        // STATUS, FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL
+        System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
+	System.out.println(String.format("%-10s", "DEP") + String.format("%-18s", "AC1234") + String.format("%-18s", "Vancouver") + String.format("%-15s", "20/12/2017") + String.format("%-10s", "15:03") + String.format("%-8s", "1"));
     }
 
     public static void purchaseTickets() {
@@ -98,7 +104,9 @@ public class AirKrista {
 
         System.out.println("All departing Air Canada flights for today are:");
 
-        // PRINT FLIGHTS AT LEAST 1 HOUR FROM NOW HERE
+	System.out.println(String.format("%-10s", "Choice") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Seats Left") + String.format("%-10s", "Price"));
+        System.out.println(String.format("%-10s", "1.") + String.format("%-18s", "AC1234") + String.format("%-18s", "Vancouver") + String.format("%-15s", "20/12/2017") + String.format("%-10s", "12:00") + String.format("%-12s", "1") + String.format("%-15s", "300") + String.format("%-10s", "$415.99"));
+	// PRINT FLIGHTS AT LEAST 1 HOUR FROM NOW HERE
         
         System.out.println("Which flight would you like?");
         int flightChoice = keyboard.nextInt();
@@ -120,8 +128,11 @@ public class AirKrista {
 	System.out.println("\n=========================================================");
 	System.out.println("Invoice:\n");
 
-	// FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL, QUANTITY, PRICE
-
+	
+	System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Quantity") + String.format("%-15s", "Price"));
+	System.out.println(String.format("%-18s", "AC1234") + String.format("%-18s", "Vancouver") + String.format("%-15s", "20/12/2017") + String.format("%-10s", "45:22") + String.format("%-12s", "1") + String.format("%-15s", "2") + String.format("%-15s", "$1159.36"));
+	// DISPLAY BOUGHT TICKETS
+	
 	System.out.println("Your ticket numbers are:");
 	// PRINT TICKET NUMBERS
 
