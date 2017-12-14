@@ -1,5 +1,8 @@
 package airkrista;
 
+// FIX GETTING SEAT NUMBERS -- NOT WORKING
+
+
 public class Flight {
 
     private String status;
@@ -9,9 +12,9 @@ public class Flight {
     private String date;
     private String time;
     private int terminal;
-    private String plane;
     private double price;
-    
+    private int seats;
+
     public Flight(String status, String airline, String flightNumber, String destination, String date, String time, int terminal, String plane, double price) {
         this.status = status;
         this.airline = airline;
@@ -20,8 +23,17 @@ public class Flight {
         this.date = date;
         this.time = time;
         this.terminal = terminal;
-        this.plane = plane;
         this.price = price;
+        switch (plane) {
+            case "B747":
+                this.seats = 400;
+            case "B777":
+                this.seats = 300;
+            case "A310":
+                this.seats = 250;
+            default:
+                this.seats = 0;
+        }
     }
 
     public Flight(String status, String airline, String flightNumber, String destination, String date, String time, int terminal, String plane) {
@@ -32,55 +44,55 @@ public class Flight {
         this.date = date;
         this.time = time;
         this.terminal = terminal;
-        this.plane = plane;
+        switch (plane) {
+            case "B747":
+                this.seats = 400;
+            case "B777":
+                this.seats = 300;
+            case "A310":
+                this.seats = 250;
+            default:
+                this.seats = 0;
+        }
     }
-    
+
     public String getStatus() {
         return this.status;
     }
-    
+
     public String getAirline() {
         return this.airline;
     }
-    
+
     public String getFlightNumber() {
         return this.flightNumber;
     }
-    
+
     public String getDestination() {
         return this.destination;
     }
-    
+
     public String getDate() {
         return this.date;
     }
-    
+
     public String getTime() {
         return this.time;
     }
-    
+
     public int getTerminal() {
         return this.terminal;
     }
-    
-    public String getPlane() {
-        return this.plane;
-    }
-    
+
     public double getPrice() {
         return this.price;
     }
-    
+
     public int getSeats() {
-        switch (plane) {
-            case "B747":
-                return 400;
-            case "B777":
-                return 300;
-            case "A310":
-                return 250;
-            default:
-                return 0;
-        }
+        return this.seats;
+    }
+
+    public void setSeats(int seats) {
+        this.seats = seats;
     }
 }
