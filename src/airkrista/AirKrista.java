@@ -78,9 +78,7 @@ public class AirKrista {
 
     public static void displayArrivals() {
         System.out.println("Arrivals for today are:");
-        
-        // AIRLINE, FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL
-	System.out.println(String.format("%-15s", "herw"));
+	System.out.println(String.format("%-15s", "Airline") + String.format("%-15s", "Flight Number") + String.format("%-15s", "Destination") + String.format("%-15s", "Date") + String.format("%-15s", "Time") + String.format("%-15s", "Terminal"));
     }
 
     public static void displayDepartures() {
