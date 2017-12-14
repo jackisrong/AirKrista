@@ -109,7 +109,7 @@ public class AirKrista {
 	// PRINT FLIGHTS AT LEAST 1 HOUR FROM NOW HERE
         
         System.out.println("Which flight would you like?");
-        int flightChoice = keyboard.nextInt();
+        String flightChoice = keyboard.nextLine();
 	// CHECK IF FLIGHT IS VALID
 	
         System.out.println("What is your name?");
@@ -117,10 +117,10 @@ public class AirKrista {
 	// CHECK IF NAME IS VALID
 	
         System.out.println("How many tickets would you like to purchase?");
-        int numberOfTickets = keyboard.nextInt();
+        String numberOfTickets = keyboard.nextLine();
 	// CHECK IF # OF TICKETS IS <= # OF SEATS
 
-	for (int i = 0; i < numberOfTickets; i++) {
+	for (int i = 0; i < Integer.parseInt(numberOfTickets); i++) {
 	    Ticket ticket = new Ticket("AC1213:000", ticketName, 5.99);
 	    tickets.add(ticket);
 	}
@@ -136,7 +136,7 @@ public class AirKrista {
 	System.out.println("Your ticket numbers are:");
 	// PRINT TICKET NUMBERS
 
-	System.out.println("Thank you for your business, Mr. Qayum!");
+	System.out.println("Thank you for your business, " + ticketName + "!");
 	System.out.println("=======================================================");
     }
 
@@ -147,6 +147,7 @@ public class AirKrista {
     public static void logoff() {
         System.out.println("Summary for [DATE]\n");
         System.out.println("Purchases:\n");
+	System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
         System.exit(0);
     }
 }
