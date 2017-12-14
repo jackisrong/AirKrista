@@ -82,18 +82,20 @@ public class AirKrista {
             inputStream = new BufferedReader(new FileReader("test.txt"));
             do {
                 line = inputStream.readLine();
-                String[] splitLine = new String[9];
-                StringTokenizer split = new StringTokenizer(line, ",");
-                int numberOfTokens = split.countTokens();
-                for (int i = 0; i < numberOfTokens; i++) {
-                    splitLine[i] = split.nextToken();
-                }
-                if (splitLine[0].equals("DEP")) {
-                    Flight flight = new Flight(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5], Integer.parseInt(splitLine[6]), splitLine[7], Double.parseDouble(splitLine[8].substring(1)));
-                    flights.add(flight);
-                } else {
-                    Flight flight = new Flight(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5], Integer.parseInt(splitLine[6]), splitLine[7]);
-                    flights.add(flight);
+                if (line != null) {
+                    String[] splitLine = new String[9];
+                    StringTokenizer split = new StringTokenizer(line, ",");
+                    int numberOfTokens = split.countTokens();
+                    for (int i = 0; i < numberOfTokens; i++) {
+                        splitLine[i] = split.nextToken();
+                    }
+                    if (splitLine[0].equals("DEP")) {
+                        Flight flight = new Flight(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5], Integer.parseInt(splitLine[6]), splitLine[7], Double.parseDouble(splitLine[8].substring(1)));
+                        flights.add(flight);
+                    } else {
+                        Flight flight = new Flight(splitLine[0], splitLine[1], splitLine[2], splitLine[3], splitLine[4], splitLine[5], Integer.parseInt(splitLine[6]), splitLine[7]);
+                        flights.add(flight);
+                    }
                 }
             } while (line != null);
         } catch (FileNotFoundException e) {
