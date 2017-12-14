@@ -1,5 +1,4 @@
 package airkrista;
-//Jack Poops Bullets
 
 import java.util.*;
 
