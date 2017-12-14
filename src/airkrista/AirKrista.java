@@ -12,8 +12,9 @@ import java.util.StringTokenizer;
 
 public class AirKrista {
 
-    public static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
     public static ArrayList<Flight> flights = new ArrayList<Flight>();
+    public static ArrayList<Ticket> boughtTickets = new ArrayList<Ticket>();
+    public static ArrayList<Ticket> refundedTickets = new ArrayList<Ticket>();
     public static GregorianCalendar calendar = new GregorianCalendar();
     public static String todayDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
 
@@ -196,7 +197,7 @@ public class AirKrista {
 
         for (int i = 0; i < Integer.parseInt(numberOfTickets); i++) {
             Ticket ticket = new Ticket("AC1213:000", ticketName, 5.99);
-            tickets.add(ticket);
+            boughtTickets.add(ticket);
         }
 
         System.out.println("\n=========================================================");
@@ -206,7 +207,7 @@ public class AirKrista {
         System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + Integer.parseInt(numberOfTickets) * chosenFlight.getPrice()));
 
         System.out.println("\nYour ticket numbers are:");
-        for (int i = 0; i < tickets.size(); i++) {
+        for (int i = 0; i < boughtTickets.size(); i++) {
             // GET EXISTING TICKET NUMBERS, CREATE NEW UNTAKEN TICKET NUMBERS
         }
 
@@ -222,9 +223,10 @@ public class AirKrista {
         while (!foundTicket) {
             System.out.println("Please enter a valid ticket number:");
             String ticketNumber = keyboard.nextLine();
-            for (int i = 0; i < tickets.size(); i++) {
-                if (ticketNumber.equals(tickets.get(i).getTicketNumber())) {
-                    refundedTicket = tickets.get(i);
+            for (int i = 0; i < boughtTickets.size(); i++) {
+                if (ticketNumber.equals(boughtTickets.get(i).getTicketNumber())) {
+                    refundedTicket = boughtTickets.get(i);
+                    refundedTickets.add(refundedTicket);
                     foundTicket = true;
                     break;
                 }
@@ -238,9 +240,30 @@ public class AirKrista {
     }
 
     public static void logoff() {
-        System.out.println("Summary for [DATE]\n");
+        double totalSales = 0.00;
+        double totalRefunds = 0.00;
+        
+        System.out.println("Summary for " + todayDate + "\n");
         System.out.println("Purchases:\n");
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
+        for (int i = 0; i < boughtTickets.size(); i++) {
+            System.out.println(String.format("%-18s", boughtTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", boughtTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + boughtTickets.get(i).getPrice()));
+            totalSales += boughtTickets.get(i).getPrice();
+        }
+        System.out.println("================================");
+        System.out.println(String.format("%-36s", "Total Sales:") + "$" + String.format("%.2f", totalSales) + "\n");
+        
+        System.out.println("Refunds:\n");
+        System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
+        for (int i = 0; i < refundedTickets.size(); i++) {
+            System.out.println(String.format("%-18s", refundedTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", refundedTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + refundedTickets.get(i).getPrice()));
+            totalRefunds += refundedTickets.get(i).getPrice();
+        }
+        System.out.println("================================");
+        System.out.println(String.format("%-36s", "Total Refunds:") + "$" + String.format("%.2f", totalRefunds) + "\n");
+        
+        System.out.println("*****************************************");
+        System.out.println(String.format("%-36s", "Profit:") + "$" + String.format("%.2f", totalSales - totalRefunds) + "\n");
         System.exit(0);
     }
 }
