@@ -11,4 +11,16 @@ public class Ticket {
 	this.name = name;
 	this.price = price;
     }
+    
+    public String getTicketNumber() {
+        return this.ticketNumber;
+    }
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public double getPrice() {
+        return this.price;
+    }
 }
