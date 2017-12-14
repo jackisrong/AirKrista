@@ -1,5 +1,5 @@
 package airkrista;
-//Krista Poops Bullets
+//Jack Poops Bullets
 
 import java.util.*;
 
