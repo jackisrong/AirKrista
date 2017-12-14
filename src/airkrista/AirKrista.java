@@ -75,15 +75,18 @@ public class AirKrista {
 
     // Complete the folllowing methods
     public static void updateDatabase() throws IOException {
-        flights.clear();
-        System.out.println("Choose the file that contains your database");
-
-        // CHOOSE THE FILE
+        Scanner keyboard = new Scanner(System.in);
         BufferedReader inputStream = null;
         String line = null;
-
+        
+        // Clear flights and ask for database file name
+        flights.clear();
+        System.out.println("Choose the file that contains your database");
+        String fileName = keyboard.nextLine();
+        
+        // Read file, get flights and add to ArrayList
         try {
-            inputStream = new BufferedReader(new FileReader("test.txt"));
+            inputStream = new BufferedReader(new FileReader(fileName));
             do {
                 line = inputStream.readLine();
                 if (line != null) {
@@ -114,6 +117,7 @@ public class AirKrista {
     public static void displayArrivals() {
         String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
 
+        // Print all of todays arrivals
         System.out.println("Arrivals for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
@@ -127,6 +131,7 @@ public class AirKrista {
         String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
+        // Print all of today's departures except for ones already departed
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
@@ -147,6 +152,7 @@ public class AirKrista {
         String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
+        // Print all of today's Air Canada flights except already arrived or departed
         System.out.println("All Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
@@ -171,6 +177,7 @@ public class AirKrista {
         Flight chosenFlight = null;
         String numberOfTickets = null;
 
+        // Print all of today's departing Air Canada flights 1 hour or more before flight time
         System.out.println("All departing Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Choice") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Seats Left") + String.format("%-10s", "Price"));
         int choiceCounter = 0;
@@ -189,6 +196,7 @@ public class AirKrista {
             }
         }
 
+        // Ask for flight choice
         while (true) {
             System.out.println("Which flight would you like?");
             String flightChoice = keyboard.nextLine();
@@ -204,9 +212,11 @@ public class AirKrista {
             }
         }
 
+        // Ask for name
         System.out.println("\nWhat is your name?");
         String ticketName = keyboard.nextLine();
 
+        // Ask for number of tickets
         while (true) {
             System.out.println("\nHow many tickets would you like to purchase?");
             numberOfTickets = keyboard.nextLine();
@@ -222,24 +232,24 @@ public class AirKrista {
         }
 
         for (int i = 0; i < Integer.parseInt(numberOfTickets); i++) {
+            // CREATE TICKET NUMBERS (MAKE SURE NOT DUPLICATED WITH EXISTING TICKETS)
             Ticket ticket = new Ticket("AC1213:000", ticketName, chosenFlight.getPrice());
             boughtTickets.add(ticket);
         }
         
         // FIX THIS -- CURRENTLY NOT WORKING
+        // Update number of seats in flight
         //chosenFlight.setSeats(chosenFlight.getSeats() - Integer.parseInt(numberOfTickets));
 
+        // Print invoice
         System.out.println("\n=========================================================");
         System.out.println("Invoice:\n");
-
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Quantity") + String.format("%-15s", "Price"));
         System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + String.format("%.2f", Math.round(Integer.parseInt(numberOfTickets) * chosenFlight.getPrice() * 100) / 100.0)));
-
         System.out.println("\nYour ticket numbers are:");
         for (int i = 0; i < boughtTickets.size(); i++) {
-            // GET EXISTING TICKET NUMBERS, CREATE NEW UNTAKEN TICKET NUMBERS
+            // PRINT ALL TICKET NUMBERS BOUGHT IN THIS SESSION
         }
-
         System.out.println("\nThank you for your business, " + ticketName + "!");
         System.out.println("=======================================================");
     }
@@ -249,12 +259,14 @@ public class AirKrista {
         Ticket refundedTicket = null;
         boolean foundTicket = false;
 
+        // Ask for valid ticket number
         while (!foundTicket) {
             System.out.println("Please enter a valid ticket number:");
             String ticketNumber = keyboard.nextLine();
             for (int i = 0; i < boughtTickets.size(); i++) {
                 if (ticketNumber.equals(boughtTickets.get(i).getTicketNumber())) {
                     refundedTicket = boughtTickets.get(i);
+                    boughtTickets.remove(i);
                     refundedTickets.add(refundedTicket);
                     foundTicket = true;
                     break;
@@ -265,6 +277,7 @@ public class AirKrista {
             }
         }
 
+        // Print refund approved
         System.out.println("Your refund has been approved in the amount of $" + refundedTicket.getPrice() + ". Have a nice day " + refundedTicket.getName() + "!");
     }
 
@@ -295,6 +308,7 @@ public class AirKrista {
         System.out.println("================================");
         System.out.println(String.format("%-36s", "Total Refunds:") + "$" + String.format("%.2f", totalRefunds) + "\n");
 
+        // Print profit
         System.out.println("*****************************************");
         System.out.println(String.format("%-36s", "Profit:") + "$" + String.format("%.2f", totalSales - totalRefunds) + "\n");
         System.exit(0);
