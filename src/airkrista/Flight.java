@@ -1,8 +1,5 @@
 package airkrista;
 
-// FIX GETTING SEAT NUMBERS -- NOT WORKING
-
-
 public class Flight {
 
     private String status;
@@ -24,15 +21,12 @@ public class Flight {
         this.time = time;
         this.terminal = terminal;
         this.price = price;
-        switch (plane) {
-            case "B747":
-                this.seats = 400;
-            case "B777":
-                this.seats = 300;
-            case "A310":
-                this.seats = 250;
-            default:
-                this.seats = 0;
+        if (plane.equals("B747")) {
+            this.seats = 400;
+        } else if (plane.equals("B777")) {
+            this.seats = 300;
+        } else if (plane.equals("A310")) {
+            this.seats = 250;
         }
     }
 
@@ -44,15 +38,12 @@ public class Flight {
         this.date = date;
         this.time = time;
         this.terminal = terminal;
-        switch (plane) {
-            case "B747":
-                this.seats = 400;
-            case "B777":
-                this.seats = 300;
-            case "A310":
-                this.seats = 250;
-            default:
-                this.seats = 0;
+        if (plane.equals("B747")) {
+            this.seats = 400;
+        } else if (plane.equals("B777")) {
+            this.seats = 300;
+        } else if (plane.equals("A310")) {
+            this.seats = 250;
         }
     }
 
