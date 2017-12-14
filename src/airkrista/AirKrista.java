@@ -1,9 +1,12 @@
 package airkrista;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
 public class AirKrista {
+    
+    public static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
@@ -77,6 +80,7 @@ public class AirKrista {
         System.out.println("Arrivals for today are:");
         
         // AIRLINE, FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL
+	System.out.println(String.format("%-15s", "herw"));
     }
 
     public static void displayDepartures() {
@@ -100,13 +104,31 @@ public class AirKrista {
         
         System.out.println("Which flight would you like?");
         int flightChoice = keyboard.nextInt();
+	// CHECK IF FLIGHT IS VALID
+	
         System.out.println("What is your name?");
         String ticketName = keyboard.nextLine();
+	// CHECK IF NAME IS VALID
+	
         System.out.println("How many tickets would you like to purchase?");
         int numberOfTickets = keyboard.nextInt();
+	// CHECK IF # OF TICKETS IS <= # OF SEATS
 
-        //Ticket ticket = new Ticket(number, name, price);
-        // DISPLAY INVOICE HERE
+	for (int i = 0; i < numberOfTickets; i++) {
+	    Ticket ticket = new Ticket("AC1213:000", ticketName, 5.99);
+	    tickets.add(ticket);
+	}
+
+	System.out.println("\n=========================================================");
+	System.out.println("Invoice:\n");
+
+	// FLIGHT NUMBER, DESTINATION, DATE, TIME, TERMINAL, QUANTITY, PRICE
+
+	System.out.println("Your ticket numbers are:");
+	// PRINT TICKET NUMBERS
+
+	System.out.println("Thank you for your business, Mr. Qayum!");
+	System.out.println("=======================================================");
     }
 
     public static void refundTickets() {
