@@ -1,5 +1,9 @@
 package airkrista;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.GregorianCalendar;
 import java.util.Scanner;
@@ -8,6 +12,7 @@ import java.util.StringTokenizer;
 public class AirKrista {
     
     public static ArrayList<Ticket> tickets = new ArrayList<Ticket>();
+    public static ArrayList<String> flights = new ArrayList<String>();
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
@@ -62,10 +67,29 @@ public class AirKrista {
     }
 
     // Complete the folllowing methods
-    public static void updateDatabase() {
-        System.out.println("Choose the file that contains your database");
-        
+    public static void updateDatabase() throws IOException {
+        System.out.println("Choose the file that contains your database"); 
+    
         // GET FILE
+        BufferedReader inputStream = null;
+        String line = null;
+
+        try {
+            inputStream = new BufferedReader(new FileReader("test.txt"));
+            do {
+                line = inputStream.readLine();
+                flights.add(line);
+                System.out.println(line);
+            } while (line != null);
+        } catch (FileNotFoundException e) {
+            System.out.println("Error opening file");
+        } finally {
+            if (inputStream != null) {
+                inputStream.close();
+            }
+        }
+       
+        System.out.println(flights);
         
         String exampleFileLine = "DEP,Lufthansa,LU9999,Miami,21/11/2015,22:00,2,B747,$989.73";
         String[] splitFile = new String[9];
