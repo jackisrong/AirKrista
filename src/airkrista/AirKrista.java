@@ -19,7 +19,6 @@ public class AirKrista {
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
-        String input = "0";
 
         while (true) {
             System.out.println("************ MAIN MENU ************");
@@ -31,7 +30,7 @@ public class AirKrista {
             System.out.println("6. Refund Tickets");
             System.out.println("7. Logoff");
 
-            input = keyboard.nextLine();
+            String input = keyboard.nextLine();
 
             switch (input) {
                 case "1":
@@ -73,11 +72,10 @@ public class AirKrista {
         }
     }
 
-    // Complete the folllowing methods
     public static void updateDatabase() throws IOException {
         Scanner keyboard = new Scanner(System.in);
         BufferedReader inputStream = null;
-        String line = null;
+        String line;
         
         // Clear flights and ask for database file name
         flights.clear();
@@ -121,7 +119,7 @@ public class AirKrista {
         System.out.println("Arrivals for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("ARR") & flights.get(i).getDate().equals(currentDate)) {
+            if (!flights.get(i).isDeparture() & flights.get(i).getDate().equals(currentDate)) {
                 System.out.println(String.format("%-15s", flights.get(i).getAirline()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
@@ -135,7 +133,7 @@ public class AirKrista {
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getDate().equals(currentDate)) {
+            if (flights.get(i).isDeparture() & flights.get(i).getDate().equals(currentDate)) {
                 if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2))) {
                     continue;
                 } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2))) {
@@ -182,7 +180,7 @@ public class AirKrista {
         System.out.println(String.format("%-10s", "Choice") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Seats Left") + String.format("%-10s", "Price"));
         int choiceCounter = 0;
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
+            if (flights.get(i).isDeparture() & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
                 if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2)) + 1) {
                     continue;
                 } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2)) + 1) {
