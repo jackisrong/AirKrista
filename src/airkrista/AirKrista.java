@@ -1,12 +1,13 @@
 package airkrista;
 
-import java.util.*;
+import java.util.Scanner;
+import java.util.StringTokenizer;
 
 public class AirKrista {
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
-        int input = 0;
+        String input = "0";
 
         while (true) {
             System.out.println("************ MAIN MENU ************");
@@ -18,34 +19,34 @@ public class AirKrista {
             System.out.println("6. Refund Tickets");
             System.out.println("7. Logoff");
 
-            input = keyboard.nextInt();
+            input = keyboard.nextLine();
 
             switch (input) {
-                case 1:
+                case "1":
                     updateDatabase();
                     break;
 
-                case 2:
+                case "2":
                     displayArrivals();
                     break;
 
-                case 3:
+                case "3":
                     displayDepartures();
                     break;
 
-                case 4:
+                case "4":
                     displayAirCanada();
                     break;
 
-                case 5:
+                case "5":
                     purchaseTickets();
                     break;
 
-                case 6:
+                case "6":
                     refundTickets();
                     break;
 
-                case 7:
+                case "7":
                     logoff();
                     break;
 
