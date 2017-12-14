@@ -86,4 +86,8 @@ public class Flight {
     public void setSeats(int seats) {
         this.seats = seats;
     }
+    
+    public boolean isDeparture() {
+        return this.getStatus().equals("DEP");
+    }
 }
