@@ -11,5 +11,4 @@ public class Ticket {
 	this.name = name;
 	this.price = price;
     }
-
 }
