@@ -16,7 +16,6 @@ public class AirKrista {
     public static ArrayList<Ticket> boughtTickets = new ArrayList<Ticket>();
     public static ArrayList<Ticket> refundedTickets = new ArrayList<Ticket>();
     public static GregorianCalendar calendar = new GregorianCalendar();
-    public static String todayDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
@@ -76,9 +75,10 @@ public class AirKrista {
 
     // Complete the folllowing methods
     public static void updateDatabase() throws IOException {
+        flights.clear();
         System.out.println("Choose the file that contains your database");
 
-        // GET FILE
+        // CHOOSE THE FILE
         BufferedReader inputStream = null;
         String line = null;
 
@@ -109,43 +109,63 @@ public class AirKrista {
                 inputStream.close();
             }
         }
-
-        System.out.println(flights);
     }
 
     public static void displayArrivals() {
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+
         System.out.println("Arrivals for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("ARR") & flights.get(i).getDate().equals(todayDate)) {
+            if (flights.get(i).getStatus().equals("ARR") & flights.get(i).getDate().equals(currentDate)) {
                 System.out.println(String.format("%-15s", flights.get(i).getAirline()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
     }
 
     public static void displayDepartures() {
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getDate().equals(todayDate)) {
-                // REMOVE FLIGHTS THAT HAVE ALREADY DEPARTED
+            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getDate().equals(currentDate)) {
+                if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2))) {
+                    continue;
+                } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2))) {
+                    if (Integer.parseInt(flights.get(i).getTime().substring(3, 5)) < Integer.parseInt(currentTime.substring(3, 5))) {
+                        continue;
+                    }
+                }
                 System.out.println(String.format("%-15s", flights.get(i).getAirline()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
     }
 
     public static void displayAirCanada() {
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+
         System.out.println("All Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(todayDate)) {
-                // REMOVE FLIGHTS THAT HAVE ALREADY ARRIVE OR DEPARTED
-                System.out.println(String.format("%-10s", "DEP") + String.format("%-18s", "AC1234") + String.format("%-18s", "Vancouver") + String.format("%-15s", "20/12/2017") + String.format("%-10s", "15:03") + String.format("%-8s", "1"));
+            if (flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
+                if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2))) {
+                    continue;
+                } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2))) {
+                    if (Integer.parseInt(flights.get(i).getTime().substring(3, 5)) < Integer.parseInt(currentTime.substring(3, 5))) {
+                        continue;
+                    }
+                }
+                System.out.println(String.format("%-10s", flights.get(i).getStatus()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDestination()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
     }
 
     public static void purchaseTickets() {
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
         Flight chosenFlight = null;
@@ -155,11 +175,17 @@ public class AirKrista {
         System.out.println(String.format("%-10s", "Choice") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Seats Left") + String.format("%-10s", "Price"));
         int choiceCounter = 0;
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(todayDate)) {
-                // REMOVE FLIGHTS THAT ARE WITHIN 1 HOUR FROM NOW
+            if (flights.get(i).getStatus().equals("DEP") & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
+                if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2)) + 1) {
+                    continue;
+                } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2)) + 1) {
+                    if (Integer.parseInt(flights.get(i).getTime().substring(3, 5)) < Integer.parseInt(currentTime.substring(3, 5))) {
+                        continue;
+                    }
+                }
                 choiceCounter++;
                 availableFlights.add(flights.get(i));
-                System.out.println(String.format("%-10s", choiceCounter + ".") + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-12s", flights.get(i).getTerminal()) + String.format("%-15s", flights.get(i).getSeats()) + String.format("%-10s", "$" + flights.get(i).getPrice()));
+                System.out.println(String.format("%-10s", choiceCounter + ".") + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-12s", flights.get(i).getTerminal()) + String.format("%-15s", flights.get(i).getSeats()) + String.format("%-10s", "$" + String.format("%.2f", flights.get(i).getPrice())));
             }
         }
 
@@ -196,15 +222,18 @@ public class AirKrista {
         }
 
         for (int i = 0; i < Integer.parseInt(numberOfTickets); i++) {
-            Ticket ticket = new Ticket("AC1213:000", ticketName, 5.99);
+            Ticket ticket = new Ticket("AC1213:000", ticketName, chosenFlight.getPrice());
             boughtTickets.add(ticket);
         }
+        
+        // FIX THIS -- CURRENTLY NOT WORKING
+        //chosenFlight.setSeats(chosenFlight.getSeats() - Integer.parseInt(numberOfTickets));
 
         System.out.println("\n=========================================================");
         System.out.println("Invoice:\n");
 
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Quantity") + String.format("%-15s", "Price"));
-        System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + Integer.parseInt(numberOfTickets) * chosenFlight.getPrice()));
+        System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + String.format("%.2f", Math.round(Integer.parseInt(numberOfTickets) * chosenFlight.getPrice() * 100) / 100.0)));
 
         System.out.println("\nYour ticket numbers are:");
         for (int i = 0; i < boughtTickets.size(); i++) {
@@ -240,28 +269,32 @@ public class AirKrista {
     }
 
     public static void logoff() {
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         double totalSales = 0.00;
         double totalRefunds = 0.00;
+
+        System.out.println("Summary for " + currentDate + "\n");
         
-        System.out.println("Summary for " + todayDate + "\n");
+        // Print purchases
         System.out.println("Purchases:\n");
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
         for (int i = 0; i < boughtTickets.size(); i++) {
-            System.out.println(String.format("%-18s", boughtTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", boughtTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + boughtTickets.get(i).getPrice()));
+            System.out.println(String.format("%-18s", boughtTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", boughtTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + String.format("%.2f", boughtTickets.get(i).getPrice())));
             totalSales += boughtTickets.get(i).getPrice();
         }
         System.out.println("================================");
         System.out.println(String.format("%-36s", "Total Sales:") + "$" + String.format("%.2f", totalSales) + "\n");
-        
+
+        // Print refunds
         System.out.println("Refunds:\n");
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
         for (int i = 0; i < refundedTickets.size(); i++) {
-            System.out.println(String.format("%-18s", refundedTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", refundedTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + refundedTickets.get(i).getPrice()));
+            System.out.println(String.format("%-18s", refundedTickets.get(i).getTicketNumber().substring(0, 6)) + String.format("%-18s", refundedTickets.get(i).getTicketNumber()) + String.format("%-18s", "$" + String.format("%.2f", refundedTickets.get(i).getPrice())));
             totalRefunds += refundedTickets.get(i).getPrice();
         }
         System.out.println("================================");
         System.out.println(String.format("%-36s", "Total Refunds:") + "$" + String.format("%.2f", totalRefunds) + "\n");
-        
+
         System.out.println("*****************************************");
         System.out.println(String.format("%-36s", "Profit:") + "$" + String.format("%.2f", totalSales - totalRefunds) + "\n");
         System.exit(0);
