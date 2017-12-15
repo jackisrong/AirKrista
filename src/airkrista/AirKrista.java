@@ -232,9 +232,9 @@ public class AirKrista {
             boughtTickets.add(ticket);
         }
 
-        // FIX THIS -- CURRENTLY NOT WORKING
         // Update number of seats in flight
-        //chosenFlight.setSeats(chosenFlight.getSeats() - Integer.parseInt(numberOfTickets));
+        chosenFlight.setSeats(chosenFlight.getSeats() - numberOfTickets);
+        
         // Print invoice
         System.out.println("\n=========================================================");
         System.out.println("Invoice:\n");
