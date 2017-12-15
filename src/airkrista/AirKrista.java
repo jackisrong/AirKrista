@@ -15,6 +15,7 @@ public class AirKrista {
 
     public static ArrayList<Flight> flights = new ArrayList<Flight>();
     public static ArrayList<Ticket> boughtTickets = new ArrayList<Ticket>();
+    public static ArrayList<Ticket> validTickets = new ArrayList<Ticket>();
     public static ArrayList<Ticket> refundedTickets = new ArrayList<Ticket>();
     public static GregorianCalendar calendar = new GregorianCalendar();
 
@@ -230,14 +231,15 @@ public class AirKrista {
         // Create ticket numbers
         for (int i = 0; i < numberOfTickets; i++) {
             int numberOfExistingFlightTickets = 0;
-            for (int x = 0; x < boughtTickets.size(); x++) {
-                if (boughtTickets.get(x).getTicketNumber().substring(0,6).equals(chosenFlight.getFlightNumber())) {
+            for (int x = 0; x < validTickets.size(); x++) {
+                if (validTickets.get(x).getTicketNumber().substring(0,6).equals(chosenFlight.getFlightNumber())) {
                     numberOfExistingFlightTickets++;
                 }
             }
             Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets), ticketName, chosenFlight.getPrice());
             ticketNumbersThisSession.add(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets));
             boughtTickets.add(ticket);
+            validTickets.add(ticket);
         }
 
         // Update number of seats in flight
@@ -265,13 +267,10 @@ public class AirKrista {
         while (!foundTicket) {
             System.out.println("Please enter a valid ticket number:");
             String ticketNumber = keyboard.nextLine();
-            for (int i = 0; i < boughtTickets.size(); i++) {
-                if (ticketNumber.equals(boughtTickets.get(i).getTicketNumber())) {
-                    refundedTicket = boughtTickets.get(i);
-                    // IF WE REMOVE THE TICKET HERE, THEN WHEN YOU LOGOFF THE SUMMMARY IS WRONG
-                    // BUT IF YOU DON'T REMOVE IT THEN YOU CAN KEEP REFUNDING THE SAME TICKET
-                    // FIX THIS PLEASE KRISTA
-                    boughtTickets.remove(i);
+            for (int i = 0; i < validTickets.size(); i++) {
+                if (ticketNumber.equals(validTickets.get(i).getTicketNumber())) {
+                    refundedTicket = validTickets.get(i);
+                    validTickets.remove(i);
                     refundedTickets.add(refundedTicket);
                     foundTicket = true;
                     break;
