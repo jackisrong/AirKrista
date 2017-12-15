@@ -31,40 +31,33 @@ public class AirKrista {
             System.out.println("7. Logoff");
 
             String input = keyboard.nextLine();
-
+            
             switch (input) {
                 case "1":
                     try {
                         updateDatabase();
                     } catch (IOException e) {
-                        System.out.println("IOException");
+                        System.out.println("ERROR: IOException in main switch.");
                     }
                     break;
-
                 case "2":
                     displayArrivals();
                     break;
-
                 case "3":
                     displayDepartures();
                     break;
-
                 case "4":
                     displayAirCanada();
                     break;
-
                 case "5":
                     purchaseTickets();
                     break;
-
                 case "6":
                     refundTickets();
                     break;
-
                 case "7":
                     logoff();
                     break;
-
                 default:
                     System.out.println("Invalid menu entry!");
                     break;
@@ -79,7 +72,7 @@ public class AirKrista {
         
         // Clear flights and ask for database file name
         flights.clear();
-        System.out.println("Choose the file that contains your database");
+        System.out.println("Enter file name of your database: (must be located in project folder)");
         String fileName = keyboard.nextLine();
         
         // Read file, get flights and add to ArrayList
@@ -104,7 +97,7 @@ public class AirKrista {
                 }
             } while (line != null);
         } catch (FileNotFoundException e) {
-            System.out.println("Error opening file");
+            System.out.println("ERROR: Cannot open file.");
         } finally {
             if (inputStream != null) {
                 inputStream.close();
