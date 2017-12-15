@@ -1,6 +1,5 @@
 package airkrista;
 
-import static airkrista.AirKrista.calendar;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
