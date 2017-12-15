@@ -112,27 +112,24 @@ public class AirKrista {
     }
 
     public static void displayArrivals() {
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
-
         // Print all of todays arrivals
         System.out.println("Arrivals for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (!flights.get(i).isDeparture() & flights.get(i).getDate().equals(currentDate)) {
+            if (!flights.get(i).isDeparture() & flights.get(i).isToday()) {
                 System.out.println(String.format("%-15s", flights.get(i).getAirline()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
     }
 
     public static void displayDepartures() {
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
         // Print all of today's departures except for ones already departed
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).isDeparture() & flights.get(i).getDate().equals(currentDate)) {
+            if (flights.get(i).isDeparture() & flights.get(i).isToday()) {
                 if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2))) {
                     continue;
                 } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2))) {
@@ -146,14 +143,13 @@ public class AirKrista {
     }
 
     public static void displayAirCanada() {
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
         // Print all of today's Air Canada flights except already arrived or departed
         System.out.println("All Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
+            if (flights.get(i).getAirline().equals("Air Canada") & flights.get(i).isToday()) {
                 if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2))) {
                     continue;
                 } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2))) {
@@ -167,7 +163,6 @@ public class AirKrista {
     }
 
     public static void purchaseTickets() {
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
@@ -179,7 +174,7 @@ public class AirKrista {
         System.out.println(String.format("%-10s", "Choice") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Seats Left") + String.format("%-10s", "Price"));
         int choiceCounter = 0;
         for (int i = 0; i < flights.size(); i++) {
-            if (flights.get(i).isDeparture() & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).getDate().equals(currentDate)) {
+            if (flights.get(i).isDeparture() & flights.get(i).getAirline().equals("Air Canada") & flights.get(i).isToday()) {
                 if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) < Integer.parseInt(currentTime.substring(0, 2)) + 1) {
                     continue;
                 } else if (Integer.parseInt(flights.get(i).getTime().substring(0, 2)) == Integer.parseInt(currentTime.substring(0, 2)) + 1) {

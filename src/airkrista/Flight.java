@@ -1,5 +1,9 @@
 package airkrista;
 
+import static airkrista.AirKrista.calendar;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
+
 public class Flight {
 
     private String status;
@@ -89,5 +93,11 @@ public class Flight {
     
     public boolean isDeparture() {
         return this.getStatus().equals("DEP");
+    }
+    
+    public boolean isToday() {
+        GregorianCalendar calendar = new GregorianCalendar();
+        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        return this.getDate().equals(currentDate);
     }
 }
