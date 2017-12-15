@@ -166,6 +166,7 @@ public class AirKrista {
         String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
+        ArrayList<String> ticketNumbersThisSession = new ArrayList<String>();
         Flight chosenFlight = null;
         int numberOfTickets = 0;
 
@@ -226,9 +227,16 @@ public class AirKrista {
             }
         }
 
+        // Create ticket numbers
         for (int i = 0; i < numberOfTickets; i++) {
-            // CREATE TICKET NUMBERS (MAKE SURE NOT DUPLICATED WITH EXISTING TICKETS)
-            Ticket ticket = new Ticket("AC1213:000", ticketName, chosenFlight.getPrice());
+            int numberOfExistingFlightTickets = 0;
+            for (int x = 0; x < boughtTickets.size(); x++) {
+                if (boughtTickets.get(x).getTicketNumber().substring(0,6).equals(chosenFlight.getFlightNumber())) {
+                    numberOfExistingFlightTickets++;
+                }
+            }
+            Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets), ticketName, chosenFlight.getPrice());
+            ticketNumbersThisSession.add(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets));
             boughtTickets.add(ticket);
         }
 
@@ -241,8 +249,8 @@ public class AirKrista {
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Quantity") + String.format("%-15s", "Price"));
         System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + String.format("%.2f", Math.round(numberOfTickets * chosenFlight.getPrice() * 100) / 100.0)));
         System.out.println("\nYour ticket numbers are:");
-        for (int i = 0; i < boughtTickets.size(); i++) {
-            // PRINT ALL TICKET NUMBERS BOUGHT IN THIS SESSION
+        for (int i = 0; i < ticketNumbersThisSession.size(); i++) {
+            System.out.println(ticketNumbersThisSession.get(i));
         }
         System.out.println("\nThank you for your business, " + ticketName + "!");
         System.out.println("=======================================================");
@@ -260,6 +268,9 @@ public class AirKrista {
             for (int i = 0; i < boughtTickets.size(); i++) {
                 if (ticketNumber.equals(boughtTickets.get(i).getTicketNumber())) {
                     refundedTicket = boughtTickets.get(i);
+                    // IF WE REMOVE THE TICKET HERE, THEN WHEN YOU LOGOFF THE SUMMMARY IS WRONG
+                    // BUT IF YOU DON'T REMOVE IT THEN YOU CAN KEEP REFUNDING THE SAME TICKET
+                    // FIX THIS PLEASE KRISTA
                     boughtTickets.remove(i);
                     refundedTickets.add(refundedTicket);
                     foundTicket = true;
@@ -267,12 +278,12 @@ public class AirKrista {
                 }
             }
             if (!foundTicket) {
-                System.out.println("Sorry, invalid ticket number.");
+                System.out.println("Sorry, invalid ticket number.\n");
             }
         }
 
         // Print refund approved
-        System.out.println("Your refund has been approved in the amount of $" + refundedTicket.getPrice() + ". Have a nice day " + refundedTicket.getName() + "!");
+        System.out.println("Your refund has been approved in the amount of $" + String.format("%.2f", refundedTicket.getPrice()) + ". Have a nice day " + refundedTicket.getName() + "!");
     }
 
     public static void logoff() {
