@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.StringTokenizer;
 
@@ -19,6 +20,7 @@ public class AirKrista {
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
+        int input = 0;
 
         while (true) {
             System.out.println("************ MAIN MENU ************");
@@ -30,37 +32,41 @@ public class AirKrista {
             System.out.println("6. Refund Tickets");
             System.out.println("7. Logoff");
 
-            String input = keyboard.nextLine();
-            
-            switch (input) {
-                case "1":
-                    try {
-                        updateDatabase();
-                    } catch (IOException e) {
-                        System.out.println("ERROR: IOException in main switch.");
-                    }
-                    break;
-                case "2":
-                    displayArrivals();
-                    break;
-                case "3":
-                    displayDepartures();
-                    break;
-                case "4":
-                    displayAirCanada();
-                    break;
-                case "5":
-                    purchaseTickets();
-                    break;
-                case "6":
-                    refundTickets();
-                    break;
-                case "7":
-                    logoff();
-                    break;
-                default:
-                    System.out.println("Invalid menu entry!");
-                    break;
+            try {
+                input = keyboard.nextInt();
+                switch (input) {
+                    case 1:
+                        try {
+                            updateDatabase();
+                        } catch (IOException e) {
+                            System.out.println("ERROR: IOException in main switch.");
+                        }
+                        break;
+                    case 2:
+                        displayArrivals();
+                        break;
+                    case 3:
+                        displayDepartures();
+                        break;
+                    case 4:
+                        displayAirCanada();
+                        break;
+                    case 5:
+                        purchaseTickets();
+                        break;
+                    case 6:
+                        refundTickets();
+                        break;
+                    case 7:
+                        logoff();
+                        break;
+                    default:
+                        System.out.println("Invalid menu entry!");
+                        break;
+                }
+            } catch (InputMismatchException e) {
+                System.out.println("Invalid menu entry!");
+                keyboard.next();
             }
         }
     }
@@ -69,12 +75,12 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         BufferedReader inputStream = null;
         String line;
-        
+
         // Clear flights and ask for database file name
         flights.clear();
         System.out.println("Enter file name of your database: (must be located in project folder)");
         String fileName = keyboard.nextLine();
-        
+
         // Read file, get flights and add to ArrayList
         try {
             inputStream = new BufferedReader(new FileReader(fileName));
@@ -166,7 +172,7 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
         Flight chosenFlight = null;
-        String numberOfTickets = null;
+        int numberOfTickets = 0;
 
         // Print all of today's departing Air Canada flights 1 hour or more before flight time
         System.out.println("All departing Air Canada flights for today are:");
@@ -190,53 +196,55 @@ public class AirKrista {
         // Ask for flight choice
         while (true) {
             System.out.println("Which flight would you like?");
-            String flightChoice = keyboard.nextLine();
             try {
-                if (Integer.parseInt(flightChoice) <= choiceCounter & Integer.parseInt(flightChoice) > 0) {
-                    chosenFlight = availableFlights.get(Integer.parseInt(flightChoice) - 1);
+                int flightChoice = keyboard.nextInt();
+                if (flightChoice <= choiceCounter & flightChoice > 0) {
+                    chosenFlight = availableFlights.get(flightChoice - 1);
                     break;
                 } else {
                     System.out.println("Sorry, that's an invalid choice.\n");
                 }
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Sorry, that's an invalid choice.\n");
+                keyboard.next();
             }
         }
 
         // Ask for name
+        keyboard.nextLine();
         System.out.println("\nWhat is your name?");
         String ticketName = keyboard.nextLine();
 
         // Ask for number of tickets
         while (true) {
             System.out.println("\nHow many tickets would you like to purchase?");
-            numberOfTickets = keyboard.nextLine();
             try {
-                if (Integer.parseInt(numberOfTickets) <= chosenFlight.getSeats() & Integer.parseInt(numberOfTickets) > 0) {
+                numberOfTickets = keyboard.nextInt();
+                if (numberOfTickets <= chosenFlight.getSeats() & numberOfTickets > 0) {
                     break;
                 } else {
                     System.out.println("Sorry, that's an invalid choice.\n");
                 }
-            } catch (NumberFormatException e) {
+            } catch (InputMismatchException e) {
                 System.out.println("Sorry, that's an invalid choice.\n");
+                keyboard.next();
             }
         }
 
-        for (int i = 0; i < Integer.parseInt(numberOfTickets); i++) {
+        for (int i = 0; i < numberOfTickets; i++) {
             // CREATE TICKET NUMBERS (MAKE SURE NOT DUPLICATED WITH EXISTING TICKETS)
             Ticket ticket = new Ticket("AC1213:000", ticketName, chosenFlight.getPrice());
             boughtTickets.add(ticket);
         }
-        
+
         // FIX THIS -- CURRENTLY NOT WORKING
         // Update number of seats in flight
         //chosenFlight.setSeats(chosenFlight.getSeats() - Integer.parseInt(numberOfTickets));
-
         // Print invoice
         System.out.println("\n=========================================================");
         System.out.println("Invoice:\n");
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-12s", "Terminal") + String.format("%-15s", "Quantity") + String.format("%-15s", "Price"));
-        System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + String.format("%.2f", Math.round(Integer.parseInt(numberOfTickets) * chosenFlight.getPrice() * 100) / 100.0)));
+        System.out.println(String.format("%-18s", chosenFlight.getFlightNumber()) + String.format("%-18s", chosenFlight.getDestination()) + String.format("%-15s", chosenFlight.getDate()) + String.format("%-10s", chosenFlight.getTime()) + String.format("%-12s", chosenFlight.getTerminal()) + String.format("%-15s", numberOfTickets) + String.format("%-15s", "$" + String.format("%.2f", Math.round(numberOfTickets * chosenFlight.getPrice() * 100) / 100.0)));
         System.out.println("\nYour ticket numbers are:");
         for (int i = 0; i < boughtTickets.size(); i++) {
             // PRINT ALL TICKET NUMBERS BOUGHT IN THIS SESSION
@@ -278,7 +286,7 @@ public class AirKrista {
         double totalRefunds = 0.00;
 
         System.out.println("Summary for " + currentDate + "\n");
-        
+
         // Print purchases
         System.out.println("Purchases:\n");
         System.out.println(String.format("%-18s", "Flight Number") + String.format("%-18s", "Ticket Number") + String.format("%-18s", "Price"));
