@@ -158,7 +158,7 @@ public class AirKrista {
                         continue;
                     }
                 }
-                System.out.println(String.format("%-10s", flights.get(i).getStatus()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDestination()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
+                System.out.println(String.format("%-10s", flights.get(i).getStatus()) + String.format("%-18s", flights.get(i).getFlightNumber()) + String.format("%-18s", flights.get(i).getDestination()) + String.format("%-15s", flights.get(i).getDate()) + String.format("%-10s", flights.get(i).getTime()) + String.format("%-8s", flights.get(i).getTerminal()));
             }
         }
     }
