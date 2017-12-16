@@ -239,7 +239,7 @@ public class AirKrista {
 
         // Update number of seats in flight
         chosenFlight.setSeats(chosenFlight.getSeats() - numberOfTickets);
-        
+
         // Print invoice
         System.out.println("\n=========================================================");
         System.out.println("Invoice:\n");
@@ -268,6 +268,7 @@ public class AirKrista {
                     validTickets.remove(i);
                     refundedTickets.add(refundedTicket);
                     foundTicket = true;
+                    // ADD AVAILABLE SEATS BECAUSE INTO FLIGHT
                     break;
                 }
             }
