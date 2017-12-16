@@ -230,16 +230,11 @@ public class AirKrista {
 
         // Create ticket numbers
         for (int i = 0; i < numberOfTickets; i++) {
-            int numberOfExistingFlightTickets = 0;
-            for (int x = 0; x < validTickets.size(); x++) {
-                if (validTickets.get(x).getTicketNumber().substring(0,6).equals(chosenFlight.getFlightNumber())) {
-                    numberOfExistingFlightTickets++;
-                }
-            }
-            Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets), ticketName, chosenFlight.getPrice());
-            ticketNumbersThisSession.add(chosenFlight.getFlightNumber() + ":" + String.format("%03d", numberOfExistingFlightTickets));
+            Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", chosenFlight.getBoughtTickets()), ticketName, chosenFlight.getPrice());
+            ticketNumbersThisSession.add(chosenFlight.getFlightNumber() + ":" + String.format("%03d", chosenFlight.getBoughtTickets()));
             boughtTickets.add(ticket);
             validTickets.add(ticket);
+            chosenFlight.addBoughtTickets(1);
         }
 
         // Update number of seats in flight

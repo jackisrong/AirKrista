@@ -14,6 +14,7 @@ public class Flight {
     private int terminal;
     private double price;
     private int seats;
+    private int ticketsBought = 0;
 
     public Flight(String status, String airline, String flightNumber, String destination, String date, String time, int terminal, String plane, double price) {
         this.status = status;
@@ -98,5 +99,13 @@ public class Flight {
         GregorianCalendar calendar = new GregorianCalendar();
         String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         return this.getDate().equals(currentDate);
+    }
+    
+    public void addBoughtTickets(int ticketsBought) {
+        this.ticketsBought += ticketsBought;           
+    }
+    
+    public int getBoughtTickets() {
+        return this.ticketsBought;
     }
 }
