@@ -228,6 +228,9 @@ public class AirKrista {
             }
         }
 
+        // CHECK FOR SOLD OUT FLIGHTS
+        
+        
         // Create ticket numbers
         for (int i = 0; i < numberOfTickets; i++) {
             Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", chosenFlight.getBoughtTickets()), ticketName, chosenFlight.getPrice());
