@@ -1,5 +1,8 @@
 package airkrista;
 
+// FOR TIME DIFFERENCES (1 HOUR/12 HOUR), CAN POSSIBLY USE A DECIMAL SYSTEM INSTEAD
+// CONVERT TIME TO A DECIMAL, THEN COMPARE USING >= OR <=
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -271,7 +274,7 @@ public class AirKrista {
                     validTickets.remove(i);
                     refundedTickets.add(refundedTicket);
                     foundTicket = true;
-                    // ADD AVAILABLE SEATS BECAUSE INTO FLIGHT
+                    // ADD AVAILABLE SEATS BACK INTO FLIGHT
                     // IT HAS TO BE AT LEAST 12 HOURS BEFORE FLIGHT TO BE ABLE TO REFUND!!!
                     break;
                 }
