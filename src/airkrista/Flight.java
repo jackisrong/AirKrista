@@ -97,7 +97,7 @@ public class Flight {
     
     public boolean isToday() {
         GregorianCalendar calendar = new GregorianCalendar();
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        String currentDate = String.format("%02d", calendar.get(Calendar.DATE)) + "/" + String.format("%02d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         return this.getDate().equals(currentDate);
     }
     

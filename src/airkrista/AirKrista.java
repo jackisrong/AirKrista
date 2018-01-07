@@ -22,7 +22,7 @@ public class AirKrista {
     public static GregorianCalendar calendar = new GregorianCalendar();
     public static Flight chosenFlight = null;
     public static int numberOfTickets = 0;
-    public static String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+    public static String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
@@ -257,7 +257,6 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         Ticket refundedTicket = null;
         boolean foundTicket = false;
-        int refundCount = 0;
 
         // Ask for valid ticket number
         while (!foundTicket) {
@@ -265,20 +264,24 @@ public class AirKrista {
             String ticketNumber = keyboard.nextLine();
             for (int i = 0; i < validTickets.size(); i++) {
                 if (ticketNumber.equals(validTickets.get(i).getTicketNumber())) {
-                    if (Integer.parseInt(currentTime.substring(0, 2)) <= Integer.parseInt(flights.get(i).getTime().substring(0, 2)) - 12) {
+                    if (Integer.parseInt(currentTime.substring(0, 2)) > Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
+                        System.out.println("Sorry, it must be at least 12 hours before flight time to refund!");
+                    } else if (Integer.parseInt(currentTime.substring(0, 2)) == Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
+                        if (Integer.parseInt(currentTime.substring(3, 5)) > Integer.parseInt(flights.get(i).getTime().substring(3, 5))) {
+                            System.out.println("Sorry, it must be at least 12 hours before flight time to refund!");
+                        }
+                    } else {
                         refundedTicket = validTickets.get(i);
                         validTickets.remove(i);
                         refundedTickets.add(refundedTicket);
-                        refundCount++;
-                        chosenFlight.setSeats(chosenFlight.getSeats() + refundCount);
+                        chosenFlight.setSeats(chosenFlight.getSeats() + 1);
                         System.out.println("Your refund has been approved in the amount of $" + String.format("%.2f", refundedTicket.getPrice()) + ". Have a nice day, " + refundedTicket.getName() + "!");
-                        break;
-                    } else {
-                        System.out.println("Sorry, must be at least 12 hours before flight time to refund!\n");
                     }
                     foundTicket = true;
+                    break;
                 }
             }
+
             if (!foundTicket) {
                 System.out.println("Sorry, invalid ticket number.\n");
             }
@@ -286,7 +289,7 @@ public class AirKrista {
     }
 
     public static void logoff() {
-        String currentDate = String.format("%2d", calendar.get(Calendar.DATE)) + "/" + String.format("%2d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
+        String currentDate = String.format("%02d", calendar.get(Calendar.DATE)) + "/" + String.format("%02d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
         double totalSales = 0.00;
         double totalRefunds = 0.00;
 
