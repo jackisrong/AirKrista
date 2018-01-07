@@ -1,7 +1,13 @@
 package airkrista;
 
-// FOR TIME DIFFERENCES (1 HOUR/12 HOUR), CAN POSSIBLY USE A DECIMAL SYSTEM INSTEAD
-// CONVERT TIME TO A DECIMAL, THEN COMPARE USING >= OR <=
+// FOR TIME DIFFERENCES (1 HOUR/12 HOUR), CAN POSSIBLY USE A DECIMAL SYSTEM INSTEAD, THEN COMPARE USING >= OR <=
+// EXAMPLE: 06:56 would be 6.56, 21:22 would be 21.22, then it can be compared as an int
+// instead of using substring then doing 3 different if cases (hour <, hour = minutes <, and hour = minutes >)
+// THIS WOULD POSSIBLY HELP MINIMIZE LINES AND MAKE IT LESS COMPLEX
+// BUT THIS ISN'T NECESSARY IF EVERYTHING WORKS 100% OF THE TIME
+
+// ALSO SEE GLOBAL VARIABLES FOR AN ISSUE WE MAY HAVE TO CHANGE
+
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -23,7 +29,12 @@ public class AirKrista {
     public static Flight chosenFlight = null;
     public static int numberOfTickets = 0;
     public static String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
-
+    // ^^^ DOING IT LIKE THIS SETS THE CURRENTTIME TO WHENEVER THE PROGRAM GETS RUN ONLY
+    // AND NOT WHEN A CERTAIN MENU OPTION GETS CHOSEN, SCREWING UP THE ACCURACY OF THE PROGRAM
+    // EXAMPLE: the program gets ran at 10:22 but you choose to buy a ticket at 10:24
+    // the code compares currentTime as 10:22 but really it should be 10:24 because that's when the ticket is being bought
+    // POSSIBLE FIX IS TO GIVE CURRENTTIME ITS VALUE INSIDE EACH METHOD WHERE IT'S USED INSTEAD OF GLOBALLY
+    
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
         int input = 0;
