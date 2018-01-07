@@ -1,13 +1,10 @@
 package airkrista;
 
 // FOR TIME DIFFERENCES (1 HOUR/12 HOUR), CAN POSSIBLY USE A DECIMAL SYSTEM INSTEAD, THEN COMPARE USING >= OR <=
-// EXAMPLE: 06:56 would be 6.56, 21:22 would be 21.22, then it can be compared as an int
+// EXAMPLE: 06:56 would be 6.56, 21:22 would be 21.22, then it can be compared as a double
 // instead of using substring then doing 3 different if cases (hour <, hour = minutes <, and hour = minutes >)
 // THIS WOULD POSSIBLY HELP MINIMIZE LINES AND MAKE IT LESS COMPLEX
 // BUT THIS ISN'T NECESSARY IF EVERYTHING WORKS 100% OF THE TIME
-
-// ALSO SEE GLOBAL VARIABLES FOR AN ISSUE WE MAY HAVE TO CHANGE
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -28,13 +25,7 @@ public class AirKrista {
     public static GregorianCalendar calendar = new GregorianCalendar();
     public static Flight chosenFlight = null;
     public static int numberOfTickets = 0;
-    public static String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
-    // ^^^ DOING IT LIKE THIS SETS THE CURRENTTIME TO WHENEVER THE PROGRAM GETS RUN ONLY
-    // AND NOT WHEN A CERTAIN MENU OPTION GETS CHOSEN, SCREWING UP THE ACCURACY OF THE PROGRAM
-    // EXAMPLE: the program gets ran at 10:22 but you choose to buy a ticket at 10:24
-    // the code compares currentTime as 10:22 but really it should be 10:24 because that's when the ticket is being bought
-    // POSSIBLE FIX IS TO GIVE CURRENTTIME ITS VALUE INSIDE EACH METHOD WHERE IT'S USED INSTEAD OF GLOBALLY
-    
+
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
         int input = 0;
@@ -140,6 +131,8 @@ public class AirKrista {
     }
 
     public static void displayDepartures() {
+        String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+
         // Print all of today's departures except for ones already departed
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
@@ -158,6 +151,8 @@ public class AirKrista {
     }
 
     public static void displayAirCanada() {
+        String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
+
         // Print all of today's Air Canada flights except already arrived or departed
         System.out.println("All Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
@@ -179,6 +174,7 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
         ArrayList<String> ticketNumbersThisSession = new ArrayList<String>();
+        String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
         // Print all of today's departing Air Canada flights 1 hour or more before flight time
         System.out.println("All departing Air Canada flights for today are:");
@@ -268,6 +264,7 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         Ticket refundedTicket = null;
         boolean foundTicket = false;
+        String currentTime = String.format("%02d", calendar.get(Calendar.HOUR_OF_DAY)) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
         // Ask for valid ticket number
         while (!foundTicket) {
@@ -276,10 +273,10 @@ public class AirKrista {
             for (int i = 0; i < validTickets.size(); i++) {
                 if (ticketNumber.equals(validTickets.get(i).getTicketNumber())) {
                     if (Integer.parseInt(currentTime.substring(0, 2)) > Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
-                        System.out.println("Sorry, it must be at least 12 hours before flight time to refund!");
+                        System.out.println("Sorry, it must be at least 12 hours before flight time to refund!\n");
                     } else if (Integer.parseInt(currentTime.substring(0, 2)) == Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
                         if (Integer.parseInt(currentTime.substring(3, 5)) > Integer.parseInt(flights.get(i).getTime().substring(3, 5))) {
-                            System.out.println("Sorry, it must be at least 12 hours before flight time to refund!");
+                            System.out.println("Sorry, it must be at least 12 hours before flight time to refund!\n");
                         }
                     } else {
                         refundedTicket = validTickets.get(i);
