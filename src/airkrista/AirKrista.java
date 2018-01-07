@@ -2,7 +2,6 @@ package airkrista;
 
 // FOR TIME DIFFERENCES (1 HOUR/12 HOUR), CAN POSSIBLY USE A DECIMAL SYSTEM INSTEAD
 // CONVERT TIME TO A DECIMAL, THEN COMPARE USING >= OR <=
-
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
@@ -21,6 +20,9 @@ public class AirKrista {
     public static ArrayList<Ticket> validTickets = new ArrayList<Ticket>();
     public static ArrayList<Ticket> refundedTickets = new ArrayList<Ticket>();
     public static GregorianCalendar calendar = new GregorianCalendar();
+    public static Flight chosenFlight = null;
+    public static int numberOfTickets = 0;
+    public static String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
 
     public static void main(String args[]) {
         Scanner keyboard = new Scanner(System.in);
@@ -127,8 +129,6 @@ public class AirKrista {
     }
 
     public static void displayDepartures() {
-        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
-
         // Print all of today's departures except for ones already departed
         System.out.println("Departures for today are:");
         System.out.println(String.format("%-15s", "Airline") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
@@ -147,8 +147,6 @@ public class AirKrista {
     }
 
     public static void displayAirCanada() {
-        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
-
         // Print all of today's Air Canada flights except already arrived or departed
         System.out.println("All Air Canada flights for today are:");
         System.out.println(String.format("%-10s", "Status") + String.format("%-18s", "Flight Number") + String.format("%-18s", "Destination") + String.format("%-15s", "Date") + String.format("%-10s", "Time") + String.format("%-8s", "Terminal"));
@@ -167,12 +165,9 @@ public class AirKrista {
     }
 
     public static void purchaseTickets() {
-        String currentTime = calendar.get(Calendar.HOUR_OF_DAY) + ":" + String.format("%02d", calendar.get(Calendar.MINUTE));
         Scanner keyboard = new Scanner(System.in);
         ArrayList<Flight> availableFlights = new ArrayList<Flight>();
         ArrayList<String> ticketNumbersThisSession = new ArrayList<String>();
-        Flight chosenFlight = null;
-        int numberOfTickets = 0;
 
         // Print all of today's departing Air Canada flights 1 hour or more before flight time
         System.out.println("All departing Air Canada flights for today are:");
@@ -198,9 +193,11 @@ public class AirKrista {
             System.out.println("Which flight would you like?");
             try {
                 int flightChoice = keyboard.nextInt();
-                if (flightChoice <= choiceCounter & flightChoice > 0) {
+                if (flightChoice <= choiceCounter & flightChoice > 0 & flights.get(flightChoice).getSeats() > 0) {
                     chosenFlight = availableFlights.get(flightChoice - 1);
                     break;
+                } else if (flightChoice <= choiceCounter & flightChoice > 0 & flights.get(flightChoice).getSeats() == 0) {
+                    System.out.println("Sorry, this flight is sold out!\n");
                 } else {
                     System.out.println("Sorry, that's an invalid choice.\n");
                 }
@@ -231,9 +228,6 @@ public class AirKrista {
             }
         }
 
-        // CHECK FOR SOLD OUT FLIGHTS
-        
-        
         // Create ticket numbers
         for (int i = 0; i < numberOfTickets; i++) {
             Ticket ticket = new Ticket(chosenFlight.getFlightNumber() + ":" + String.format("%03d", chosenFlight.getBoughtTickets()), ticketName, chosenFlight.getPrice());
@@ -263,6 +257,7 @@ public class AirKrista {
         Scanner keyboard = new Scanner(System.in);
         Ticket refundedTicket = null;
         boolean foundTicket = false;
+        int refundCount = 0;
 
         // Ask for valid ticket number
         while (!foundTicket) {
@@ -270,22 +265,24 @@ public class AirKrista {
             String ticketNumber = keyboard.nextLine();
             for (int i = 0; i < validTickets.size(); i++) {
                 if (ticketNumber.equals(validTickets.get(i).getTicketNumber())) {
-                    refundedTicket = validTickets.get(i);
-                    validTickets.remove(i);
-                    refundedTickets.add(refundedTicket);
+                    if (Integer.parseInt(currentTime.substring(0, 2)) <= Integer.parseInt(flights.get(i).getTime().substring(0, 2)) - 12) {
+                        refundedTicket = validTickets.get(i);
+                        validTickets.remove(i);
+                        refundedTickets.add(refundedTicket);
+                        refundCount++;
+                        chosenFlight.setSeats(chosenFlight.getSeats() + refundCount);
+                        System.out.println("Your refund has been approved in the amount of $" + String.format("%.2f", refundedTicket.getPrice()) + ". Have a nice day, " + refundedTicket.getName() + "!");
+                        break;
+                    } else {
+                        System.out.println("Sorry, must be at least 12 hours before flight time to refund!\n");
+                    }
                     foundTicket = true;
-                    // ADD AVAILABLE SEATS BACK INTO FLIGHT
-                    // IT HAS TO BE AT LEAST 12 HOURS BEFORE FLIGHT TO BE ABLE TO REFUND!!!
-                    break;
                 }
             }
             if (!foundTicket) {
                 System.out.println("Sorry, invalid ticket number.\n");
             }
         }
-
-        // Print refund approved
-        System.out.println("Your refund has been approved in the amount of $" + String.format("%.2f", refundedTicket.getPrice()) + ". Have a nice day " + refundedTicket.getName() + "!");
     }
 
     public static void logoff() {
