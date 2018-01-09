@@ -6,6 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.InputMismatchException;
 import java.util.Scanner;
@@ -303,8 +304,10 @@ public class AirKrista {
 	String currentDate = String.format("%02d", calendar.get(Calendar.DATE)) + "/" + String.format("%02d", calendar.get(Calendar.MONTH) + 1) + "/" + String.format("%4d", calendar.get(Calendar.YEAR));
 	double totalSales = 0.00;
 	double totalRefunds = 0.00;
+	Date date = new Date();
 
-	System.out.println("Summary for " + currentDate + "\n");
+	System.out.printf("%s %tA, %<tB %<te, %<tY", "Summary for", date);
+	System.out.println("\n");
 
 	// Print purchases
 	System.out.println("Purchases:\n");
