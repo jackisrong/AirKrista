@@ -268,7 +268,7 @@ public class AirKrista {
 	    System.out.println("Please enter a valid ticket number:");
 	    String ticketNumber = keyboard.nextLine();
 	    for (int i = 0; i < validTickets.size(); i++) {
-		if (ticketNumber.equals(validTickets.get(i).getTicketNumber())) {
+		if (ticketNumber.toUpperCase().equals(validTickets.get(i).getTicketNumber())) {
 		    if (Integer.parseInt(currentTime.substring(0, 2)) > Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
 			System.out.println("Sorry, it must be at least 12 hours before flight time to refund!\n");
 		    } else if (Integer.parseInt(currentTime.substring(0, 2)) == Integer.parseInt(validTickets.get(i).getTime().substring(0, 2)) - 12) {
